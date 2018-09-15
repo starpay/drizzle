@@ -5,7 +5,7 @@
   "main": "dist/drizzle.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/trufflesuite/drizzle"
+    "url": "https://github.com/starpay/drizzle"
   },
   "scripts": {
     "build": "webpack --config webpack.config.js",
