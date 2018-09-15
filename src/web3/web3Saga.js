@@ -43,6 +43,19 @@ export function * initializeWeb3 ({ options }) {
             return web3
 
             break
+          case 'http':
+            var httpProvider = new Web3.providers.HttpProvider(options.fallback.url)
+            web3 = new Web3(httpProvider)
+            // Attach drizzle functions
+            web3.eth['cacheSendTransaction'] = txObject =>
+              put({ type: 'SEND_WEB3_TX', txObject, stackId, web3 })
+            web3.currentProvider.isHttpProvider = true
+            // https://github.com/ethereum/web3.js/issues/1119
+            web3.providers.HttpProvider.prototype.sendAsync = web3.providers.HttpProvider.prototype.send
+
+            yield put({ type: 'WEB3_INITIALIZED' })
+
+            return web3
           default:
             // Invalid options; throw.
             throw 'Invalid web3 fallback provided.'
